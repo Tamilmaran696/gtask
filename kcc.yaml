@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: kcc
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: dun
+        image: tamilmaran787/dun 
+        ports:
+         - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata: 
+  name: ktest
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 8080
+      port: 80
+      nodePort: 32766
+  selector: 
+    tier: frontend
+
+---
